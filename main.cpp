@@ -1,15 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include "./header.h"
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::ifstream;
+using std::ofstream;
 
-int string_search(string data_file_path, string search_string);
-int string_sort(string data_file_path, string sort_order);
-int string_count(string data_file_path);
+const string OUTPUT_FILE_PATH = "output.txt";
 
 int main(int argc, char *argv[]) {
 
@@ -66,8 +66,14 @@ int string_search(string data_file_path, string search_string){
     int line_number = 0;
     int line_position = 0;
     ifstream data_file;
+    ofstream output_file;
     data_file.open(data_file_path);
+    output_file.open("./Search_" + OUTPUT_FILE_PATH);
 
+    output_file << "SEARCH" << endl;
+            output_file << "Searched for: " << search_string << endl;
+    output_file << "Located on:" << endl;
+    output_file << "Pos\t\tLine" << endl;
     if (data_file.is_open()) {
         string read_line;
         while (std::getline(data_file, read_line)) {
@@ -77,12 +83,13 @@ int string_search(string data_file_path, string search_string){
 
 
             while (line_position >= 0) {
-                cout << "The string " << search_string << " was found on line " << line_number <<
-                " at position " << ++line_position << endl;
+
+                output_file << ++line_position << "\t\t" << line_number << endl;
                 line_position = read_line.find(search_string, line_position);
             }
         }
         data_file.close();
+        output_file.close();
     } else {
         cout << "Error opening the data file." << endl;
     }
@@ -94,15 +101,18 @@ int string_search(string data_file_path, string search_string){
 
 int string_sort(string data_file_path, string sort_order){
 
-    if (sort_order != "asc" || sort_order != "desc") {
+    ofstream output_file;
+    output_file.open("./Sort_" + OUTPUT_FILE_PATH);
 
+    if (sort_order != "asc" || sort_order != "desc") {
+        output_file << "SORTED " << sort_order << endl;
         ifstream data_file;
         data_file.open(data_file_path);
 
         if (data_file.is_open()) {
             string read_line;
             while (std::getline(data_file, read_line)) {
-
+                output_file << "Unsorted line: " << read_line << endl;
                 char temp_value;
 
                 for (int i = 0; i < read_line.size(); i++) {
@@ -131,11 +141,12 @@ int string_sort(string data_file_path, string sort_order){
                     }
 
                 }
-                cout << "sorted line:" << endl;
-                cout << read_line << endl;
+                //cout << "sorted line:" << endl;
+                output_file << "Sorted line: " << read_line << endl;
             }
         }
-
+        data_file.close();
+        output_file.close();
     } else {
         cout << "Argument 3 invalid. You must use asc or desc." << endl;
     }
@@ -147,6 +158,11 @@ int string_count(string data_file_path){
 
     ifstream data_file;
     data_file.open(data_file_path);
+
+    ofstream output_file;
+    output_file.open("./Count_" + OUTPUT_FILE_PATH);
+
+    output_file << "COUNT" << endl;
 
     if (data_file.is_open()) {
         const int LETTER_ARRAY_SIZE = 36;
@@ -177,16 +193,25 @@ int string_count(string data_file_path){
             // get the most used used letter/number
             int largest_count = 0;
             int largest_index = 0;
+            int lowest_count =100000;
+            int lowest_index =0;
             for (int i = 0; i < LETTER_ARRAY_SIZE; i++) {
 
                 if (letter_count[i] > largest_count) {
                     largest_count = letter_count[i];
                     largest_index = i;
                 }
+                if (letter_count[i] < lowest_count && letter_count[i] > 0) {// Don't want to include 0 counts
+                    lowest_count = letter_count[i];
+                    lowest_index = i;
+                }
+
             }
 
-            cout << "The most used letter on line " << line_count << " is " << letters[largest_index] <<
+            output_file << "The most used letter on line " << line_count << " is " << letters[largest_index] <<
             " it was used " << letter_count[largest_index] << " times." << endl;
+            output_file << "The least used letter on line " << line_count << " is " << letters[lowest_index] <<
+            " it was used " << letter_count[lowest_index] << " times." << endl;
 
         }
 
