@@ -6,6 +6,8 @@ using std::string;
 using std::ifstream;
 using std::ofstream;
 using std::getline;
+using std::ios;
+using std::endl;
 
 void searchFunction(string path, string term);
 void sortAsc(string path);
@@ -39,29 +41,31 @@ int main(int argc, char *argv[]) {
 void searchFunction(string path, string term) {
     ifstream input;
     input.open(path);
+    ofstream output;
+    output.open("results.txt", ios::app);
+    output << "\nResults of Search:" << endl;
     string str;
     int position = 0;
     int line = 0;
     while (getline(input, str)){
         position = str.find(term, 0);
             while (position >= 0) {
-                std::cout << "Search term '" << term << "' starts at line " << line << " position " << position <<
-                    std::endl;
+                output << "Search term '" << term << "' starts at line " << line << " position " << position << endl;
                 position++;
                 position = str.find(term, position);
             }
         line++;
     }
     input.close();
-    //ofstream output;
-    //output.open("results.txt");
-
-    //output.close();
+    output.close();
 }
 
 void sortAsc(string path) {
     ifstream input;
     input.open(path);
+    ofstream output;
+    output.open("results.txt", ios::app);
+    output << "\nResults of Sorting in Ascending Order:" << endl;
     string str;
     while (getline(input, str)) {
         if (isdigit(str[0])) {
@@ -87,25 +91,25 @@ void sortAsc(string path) {
                 numbers[startScan] = minValue;
             }
             for (int i = 0; i < counter; i++) {
-                std::cout << numbers[i] << " ";
+                output << numbers[i] << " ";
             }
             delete(numbers);
             delete(tokens);
-            std::cout << std::endl;
+            output << endl;
         } else if (isalpha(str[0])) {
-            std::cout << str << std::endl;
+            output << str << endl;
         }
     }
     input.close();
-    //ofstream output;
-    //output.open("results.txt");
-
-    //output.close();
+    output.close();
 }
 
 void sortDesc(string path) {
     ifstream input;
     input.open(path);
+    ofstream output;
+    output.open("results.txt", ios::app);
+    output << "\nResults of Sorting in Descending Order:" << endl;
     string str;
     while (getline(input, str)) {
         if (isdigit(str[0])) {
@@ -131,20 +135,17 @@ void sortDesc(string path) {
                 numbers[startScan] = maxValue;
             }
             for (int i = 0; i < counter; i++) {
-                std::cout << numbers[i] << " ";
+                output << numbers[i] << " ";
             }
             delete(numbers);
             delete(tokens);
-            std::cout << std::endl;
+            output << endl;
         } else if (isalpha(str[0])) {
-            std::cout << str << std::endl;
+            output << str << endl;
         }
     }
     input.close();
-    //ofstream output;
-    //output.open("results.txt");
-
-    //output.close();
+    output.close();
 }
 
 int ctoi(char c) {
@@ -202,11 +203,13 @@ void countFunction(string path) {
         count_array[startScan] = maxValue;
         char_array[startScan] = maxChar;
     }
-    std::cout << "The most common character is " << char_array[0] << " it is used " << count_array[0] << " times" << std::endl;
-    std::cout << "The least common character is " << char_array[105] << "it is used " << count_array[105] << " times" << std::endl;
     input.close();
-    //ofstream output;
-    //output.open("results.txt");
 
-    //output.close();
+    ofstream output;
+    output.open("results.txt", ios::app);
+    output << "\nResults of Count:" << endl;
+    output << "The most common character is " << char_array[0] << " it is used " << count_array[0] << " times" << endl;
+    output << "The least common character is " << char_array[105] << " it is used " << count_array[105] << " times" << endl;
+
+    output.close();
 }
