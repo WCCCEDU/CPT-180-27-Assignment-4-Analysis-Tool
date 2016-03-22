@@ -193,7 +193,7 @@ int string_count(string data_file_path){
             // get the most used used letter/number
             int largest_count = 0;
             int largest_index = 0;
-            int lowest_count =100000;
+            int lowest_count = INT_MAX;
             int lowest_index =0;
             for (int i = 0; i < LETTER_ARRAY_SIZE; i++) {
 
