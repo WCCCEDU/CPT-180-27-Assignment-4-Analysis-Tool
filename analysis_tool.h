@@ -1,6 +1,3 @@
-//
-// Created by Samantha on 3/4/2016.
-//
 
 #include <iostream>
 #include <fstream>
@@ -11,6 +8,7 @@ using std::string;
 using std::endl;
 using std::iostream;
 using std::ifstream;
+using std::ofstream;
 
 string validateArg1(string arg);
 string validateArg2(string arg);
@@ -21,4 +19,4 @@ int getFileNumLines(string path);
 int ctoi(char character);
 void search(ifstream file, string arg3);
 void sort(ifstream file, string arg3);
-void count(string arg1, const int num_lines);
+void count(string arg1);

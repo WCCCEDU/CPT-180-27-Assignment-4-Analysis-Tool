@@ -1,18 +1,14 @@
 #include <string.h>
 #include "analysis_tool.h"
 
-
-
 int main(int argc, char* argv[]) {
 
   string file_path = "";  // Arg 1
-  string method = "";  // method provided
-  string query = "";  // additional method provided depending on what method method is called
-
-  // argc will be at least one automatically because arg[0] is equal to executable filepath
-  if(argc > 1){
+  string method = "";  // method provided (search, sort, count)
+  string query = "";  // additional arg provided depending on what arg2 method is called (asc, desc, string)
+  if(argc > 1) {
     file_path = static_cast<string>(argv[1]);
-    if(argc > 2) {
+    if (argc > 2) {
       method = static_cast<string>(argv[2]);
       if (argc > 3) {
         query = static_cast<string>(argv[3]);
@@ -37,7 +33,7 @@ int main(int argc, char* argv[]) {
   }else if(method == "sort"){
     sort(file, query);
    }else if(method == "count"){
-   */ count(file_path, num_lines);
+   */ count(file_path);
   //}
   return 0;
 }
@@ -92,38 +88,77 @@ string validateArg3(string method, string query){
 
 //void search(ifstream file, string arg){}
 //void sort(ifstream file, string arg){}
-void count(string file_path, const int num_lines){
+void count(string file_path) {
   const int SIZE = 36;
-  const char digits[SIZE] = {'a','b','c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-  't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  const char characters[SIZE] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                                 'r', 's',
+                                 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
   int occurances[SIZE];  // parallel to digits
   // Initialize all elements of occurances to the value of zero
-  for(int i = 0; i < SIZE; i++ ){
+  for (int i = 0; i < SIZE; i++) {
     occurances[i] = 0;
   }
 
   ifstream file(file_path);
+  // while file still has lines, get next line
   string line;
-  while(getline(file, line)){
-    for(int current = 0; current < line.size(); current++){
-      bool found;
+  while (getline(file, line)) {
+    // for every character in the current line, determine whether the character is equal to
+    // any character in the characters array. If found in the array, add one to the parallel index
+    // in occurances array.
+    for (int current = 0; current < line.size(); current++) {
       int index = 0;
-      found = false;
-      while(!found && index < SIZE) {
-        if(line.at(current) == digits[index]) {
+      bool found = false;
+      char c;
+      while (!found && index < SIZE) {
+        // store current character and convert to lowercase
+        c = line.at(current);
+        tolower(c);
+        if (c == characters[index]) {
           found = true;
-          occurances[index] += 1; //Add one to the number of occurances for found digit
+          occurances[index]++; //Add one to the number of occurances for found digit
         }
         index++;
       }
     }
   }
+  file.close();
 
-  //Still needs file output
-  for(int i = 0; i < SIZE; i++){
-    cout << digits[i] << "\t\t" << occurances[i] << endl;
+  // find the largest occurance
+  int largest = 0;
+  for (int i = 0; i < SIZE; i++) {
+    if(occurances[i] > largest){
+      largest = occurances[i];
+    }
   }
 
+  //find the smallest occurance, going backwards from the largest value
+  int smallest = largest;
+  for(int i = 0; i < SIZE; i++){
+    if((occurances[i] != 0) && (occurances[i] < smallest)){
+      smallest = occurances[i];
+    }
+  }
+
+  //Open output file and output largest and smallest occurances
+  ofstream output("output.txt");
+  output << "Most Common Character(s): ";
+
+  for(int i = 0; i < SIZE; i++){
+    if(occurances[i] == largest){
+      output << characters[i] << ", ";
+    }
+  }
+  output << endl;
+  output << "Least Common Characters(s): ";
+
+  for(int i = 0; i < SIZE; i++){
+    if(occurances[i] == smallest){
+      output << characters[i] << ", ";
+    }
+  }
+  output.close();
+}
 
 /*
 
@@ -136,8 +171,6 @@ void count(string file_path, const int num_lines){
 
 */
 
-  file.close();
-}
 
 void tokenize(string line){
 
