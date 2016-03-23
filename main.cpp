@@ -23,18 +23,19 @@ int main(int argc, char* argv[]) {
   
   //get the number of lines in the file
   const int num_lines = getFileNumLines(file_path);
-  ifstream file(file_path);
 
-  file.seekg(0L, file.beg); // should return the read position to beginning of file
+  // open file and set cursor to beginning of file
+  ifstream file(file_path);
+  file.seekg(0L, file.beg);
 
   // run tool depending on user selection
-  /*if(method == "search"){
-      search(file, query);
-  }else if(method == "sort"){
-    sort(file, query);
-   }else if(method == "count"){
-   */ count(file_path);
-  //}
+  if(method == "search"){
+      search(file_path, query);
+  //}else if(method == "sort"){
+   // sort(file, query);
+  }else if(method == "count"){
+    count(file_path);
+  }
   return 0;
 }
 
@@ -86,8 +87,31 @@ string validateArg3(string method, string query){
   return query;
 }
 
-//void search(ifstream file, string arg){}
+void search(string file_path, string arg){
+  ifstream file(file_path);
+  ofstream output("search_output.txt");
+  output << "Search For: \"" << arg << "\"" << endl;
+  output << "Found at: " << endl;
+  output << "Line\tPos" << endl;
+
+  string line;
+  int found = -1;
+  int line_count = 0;
+  while(getline(file, line)){
+    line_count++;
+    found = line.find(arg, 0);
+    if(found > -1){
+      output << line_count++ << "\t" << found << endl;
+    }
+  }
+  file.close();
+  output.close();
+}
+
+
 //void sort(ifstream file, string arg){}
+
+
 void count(string file_path) {
   const int SIZE = 36;
   const char characters[SIZE] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
@@ -141,36 +165,22 @@ void count(string file_path) {
   }
 
   //Open output file and output largest and smallest occurances
-  ofstream output("output.txt");
+  ofstream output("count_output.txt");
   output << "Most Common Character(s): ";
 
   for(int i = 0; i < SIZE; i++){
     if(occurances[i] == largest){
-      output << characters[i] << ", ";
+      output << characters[i] << " ";
     }
   }
-  output << endl;
-  output << "Least Common Characters(s): ";
-
+  output << endl << "Least Common Characters(s): ";
   for(int i = 0; i < SIZE; i++){
     if(occurances[i] == smallest){
-      output << characters[i] << ", ";
+      output << characters[i] << " ";
     }
   }
   output.close();
 }
-
-/*
-
-  // Store lines of file in array of strings
-  string lines[num_lines];
-  for(int i = 0; i < num_lines; i++){
-    getline(file, lines[i]);
-    // lines[i] = tokenize(lines[i]);
-  }
-
-*/
-
 
 void tokenize(string line){
 

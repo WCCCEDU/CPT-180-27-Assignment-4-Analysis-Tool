@@ -17,6 +17,6 @@ void tokenize(string line);
 int getFileNumLines(string path);
 
 int ctoi(char character);
-void search(ifstream file, string arg3);
+void search(string file_path, string arg3);
 void sort(ifstream file, string arg3);
 void count(string arg1);
