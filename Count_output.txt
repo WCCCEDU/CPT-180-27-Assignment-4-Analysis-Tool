@@ -1,0 +1,13 @@
+COUNT
+The most used letter on line 1 is o it was used 4 times.
+The least used letter on line 1 is b it was used 1 times.
+The most used letter on line 2 is 1 it was used 1 times.
+The least used letter on line 2 is 1 it was used 1 times.
+The most used letter on line 3 is 4 it was used 3 times.
+The least used letter on line 3 is 1 it was used 1 times.
+The most used letter on line 4 is 0 it was used 1 times.
+The least used letter on line 4 is 0 it was used 1 times.
+The most used letter on line 5 is i it was used 2 times.
+The least used letter on line 5 is e it was used 1 times.
+The most used letter on line 6 is e it was used 13 times.
+The least used letter on line 6 is b it was used 1 times.
